@@ -26,3 +26,20 @@ def brute_force_directories():
             print(f"[+] Access forbidden: {target_url}")
         elif response.status_code == 404:
             print(f"[+] Not found: {target_url}")
+        
+def scan_network():
+    if os.geteuid() != 0:
+        print("[+] This script must be run as root. Please call command with sudo")
+        sys.exit()
+    
+    network_range = input("[+] Enter the network range (e.g.: 192.168.1.0/24): ")
+    port_range = [1, 21, 22, 80, 443]
+    
+    arp = ARP(pdst=network_range)
+    ether = Ether(dst="ff:ff:ff:ff:ff:ff")
+    packet = ether / arp
+    result = srp(packet, timeout=2, verbose=False)[0]
+    
+    for sent, received in result:
+        print(f"[+] Device IP: {received.psrc}, MAC: {received.hwsrc}")
+        
