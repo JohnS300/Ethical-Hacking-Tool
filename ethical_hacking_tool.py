@@ -62,3 +62,11 @@ def brute_force_login():
             if 'Login failed' not in response.text:
                 print(f"[+] Login successful with username: {username} and password: {password}")
                 return
+    
+def scrape_website():
+    url = input("[+] Enter the website URL to scrape: ")
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    
+    for a_tag in soup.find_all('a', href=True):
+        print(f"Title: {a_tag.get_text().strip()}, Link: {a_tag['href']}")
