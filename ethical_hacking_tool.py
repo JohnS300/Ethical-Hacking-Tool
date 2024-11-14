@@ -72,7 +72,7 @@ def scrape_website():
         print(f"Title: {a_tag.get_text().strip()}, Link: {a_tag['href']}")
         
 
-def scan_sql_injection():
+def scan_for_sql_injection():
     url = input("[+] Enter the target URL: ")
     payloads = ["'" , "1' OR '1'='1", "1'; DROP TABLE users; --"]
     
@@ -84,3 +84,30 @@ def scan_sql_injection():
             print(f"[+] Vulnerable to SQL Injection: {test_url}")
             
 
+def main():
+    while True:
+        print("\nChoose a tool to execute: ")
+        print("1. [+] Directory Brute Force")
+        print("2. [+] Network Scan")
+        print("3. [+] Brute Force Login")
+        print("4. [+] Website Scraper")
+        print("5. [+] SQL Injection Scanner")
+        print("0. [+] Exit")
+        
+        choice = input("Enter your choice (1-5): ")
+        
+        if choice == '1':
+            brute_force_directories()
+        elif choice == '2':
+            scan_network()
+        elif choice == '3':
+            brute_force_login()
+        elif choice == '4':
+            scrape_website()
+        elif choice == '5':
+            scan_for_sql_injection()
+        else:
+            print("[+] Invalid choice. Please select a valid option.")
+            
+if __name__ == "__main__":
+    main()
